@@ -57,7 +57,7 @@
         .btn-primary { background: var(--primary); color: white; }
         .btn-table { width: 40px; height: 40px; border-radius: 6px; border: 1px solid var(--border); background: white; cursor: pointer; font-size: 1rem; }
 
-        /* TABELA E CARDS */
+        /* TABELA E RESUMO */
         .table-container { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         table { width: 100%; border-collapse: collapse; }
         th { background: #f8fafc; padding: 1rem; text-align: left; font-size: 0.7rem; color: #64748b; text-transform: uppercase; border-bottom: 1px solid var(--border); }
@@ -65,7 +65,7 @@
 
         .consolidated-footer { background: #ffffff; border: 2px solid var(--primary); padding: 1.5rem; border-radius: 0 0 12px 12px; margin-bottom: 2rem; border-top: 1px solid #eee; }
         .resumo-title { color: var(--primary); font-weight: 800; font-size: 0.9rem; margin-bottom: 15px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
-        .resumo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .resumo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .resumo-line { display: flex; justify-content: space-between; border-bottom: 1px dashed #cbd5e1; padding: 6px 0; font-size: 0.85rem; }
 
         /* MODAIS */
@@ -77,7 +77,6 @@
         input, select, textarea { width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; background: #fcfcfc; font-size: 1rem; }
         .section-ui { background: #f8fafc; border: 1px solid var(--border); padding: 15px; border-radius: 8px; margin-top: 15px; }
         
-        /* HISTÓRICO */
         .history-box { margin-top: 15px; background: #f1f5f9; padding: 10px; border-radius: 8px; max-height: 150px; overflow-y: auto; font-size: 0.75rem; border: 1px solid var(--border); }
         .history-item { padding: 6px 0; border-bottom: 1px solid #e2e8f0; color: #64748b; }
 
@@ -86,56 +85,41 @@
         body[data-user="admin"] .admin-block { display: block !important; }
         .hidden { display: none !important; }
         
-        /* RESPONSIVIDADE (MOBILE) */
         @media (max-width: 768px) {
             .mobile-header { display: flex; }
             .sidebar { transform: translateX(-100%); }
             .sidebar.active { transform: translateX(0); }
             .sidebar.active + .sidebar-overlay { display: block; }
-            
             .main-content { margin-left: 0; padding: 1rem; padding-top: 80px; }
-            
             .stats-grid { grid-template-columns: 1fr; }
-            .filters-area > div { flex: 1 1 100% !important; }
-            
-            /* Transformar Tabela em Cards */
             thead { display: none; }
-            tr { 
-                display: block; background: white; margin-bottom: 15px; 
-                border-radius: 12px; border: 1px solid var(--border); 
-                padding: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            }
-            td { 
-                display: flex; justify-content: space-between; align-items: center; 
-                padding: 8px 5px; border: none; text-align: right; 
-            }
-            td::before { 
-                content: attr(data-label); font-weight: 800; color: #64748b; 
-                text-transform: uppercase; font-size: 0.65rem; text-align: left;
-            }
-            td:first-child { 
-                display: block; text-align: left; border-bottom: 1px solid #f1f5f9; 
-                margin-bottom: 8px; padding-bottom: 10px;
-            }
+            tr { display: block; background: white; margin-bottom: 15px; border-radius: 12px; border: 1px solid var(--border); padding: 10px; }
+            td { display: flex; justify-content: space-between; align-items: center; padding: 8px 5px; border: none; text-align: right; }
+            td::before { content: attr(data-label); font-weight: 800; color: #64748b; text-transform: uppercase; font-size: 0.65rem; text-align: left; }
+            td:first-child { display: block; text-align: left; border-bottom: 1px solid #f1f5f9; margin-bottom: 8px; padding-bottom: 10px; }
             td:first-child::before { content: ""; }
             td:last-child { justify-content: center; border-top: 1px solid #f1f5f9; padding-top: 12px; }
-
             .resumo-grid { grid-template-columns: 1fr; }
-            .modal-content { padding: 1rem; }
-            
-            /* Ajuste formulários grid */
-            .modal-content div[style*="grid-template-columns"] { 
-                grid-template-columns: 1fr !important; gap: 0 !important; 
-            }
         }
 
-        /* PRINT */
+        /* IMPRESSÃO */
         .print-header { display: none; text-align: center; margin-bottom: 15px; border-bottom: 1px solid #000; padding-bottom: 5px; }
 
         @media print {
-            .sidebar, .btn, .btn-table, #login-screen, .stats-grid, th:last-child, td:last-child, .filters-area, .history-box, .mobile-header { display: none !important; }
-            .main-content { margin: 0 !important; width: 100% !important; padding: 0 !important; }
-            .print-header { display: block !important; background: transparent !important; }
+            .sidebar, .btn, .btn-table, #login-screen, .stats-grid, th:last-child, td:last-child, 
+            .filters-area, .history-box, .mobile-header, #f-history-new, .sidebar-overlay { 
+                display: none !important; 
+            }
+            body.modal-open #app-container, body.modal-open .print-header { display: none !important; }
+            body.modal-open .modal { display: block !important; position: static !important; background: none !important; padding: 0 !important; }
+            body.modal-open .modal-content { width: 100% !important; max-width: 100% !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; overflow: visible !important; }
+            
+            input, select, textarea { border: 1px solid #ccc !important; background: none !important; color: black !important; -webkit-appearance: none; }
+            
+            body:not(.modal-open) .main-content { margin: 0 !important; width: 100% !important; padding: 0 !important; }
+            body:not(.modal-open) .print-header { display: block !important; }
+            body:not(.modal-open) .modal { display: none !important; }
+            
             .consolidated-footer { display: block !important; border: 1px solid #000 !important; }
             table, tr, td { display: table !important; width: 100% !important; }
             thead { display: table-header-group !important; }
@@ -146,28 +130,26 @@
 <body data-user="ibc">
 
     <header class="mobile-header">
-        <button onclick="toggleSidebar()" style="background:none; border:none; color:white; font-size:1.5rem; margin-right:15px; cursor:pointer;">
-            <i class="fa-solid fa-bars"></i>
-        </button>
+        <button onclick="toggleSidebar()" style="background:none; border:none; color:white; font-size:1.5rem; margin-right:15px;"><i class="fa-solid fa-bars"></i></button>
         <span style="font-weight: 800; font-size: 1.1rem;">IBC PATRIMÔNIO</span>
     </header>
 
     <div class="print-header">
-        <img src="Logo IBC.jpg" alt="Logo IBC" onerror="this.src='https://via.placeholder.com/60?text=IBC'">
-        <h2 id="p-title">IBC Patrimônio</h2>
-        <p style="font-size: 0.75rem;">Relatório Gerado em: <span id="p-date-top"></span></p>
+        <img src="Logo IBC.jpg" alt="Logo" style="width:60px;" onerror="this.src='https://via.placeholder.com/60'">
+        <h2 id="p-title">Inventário IBC</h2>
+        <p style="font-size: 0.75rem;">Gerado em: <span id="p-date-top"></span></p>
     </div>
 
     <div id="login-screen">
         <div class="login-card">
             <img src="Logo IBC.jpg" alt="Logo" style="width:80px; margin-bottom:1rem;" onerror="this.src='https://via.placeholder.com/80'">
-            <h2 style="color: var(--primary); margin-bottom: 1.5rem;">Acesso IBC Patrimônio</h2>
+            <h2 style="color: var(--primary); margin-bottom: 1.5rem;">IBC Gestão</h2>
             <label>USUÁRIO</label>
-            <input type="text" id="user-input" placeholder="Usuário" style="text-align: center; margin-bottom: 10px;">
+            <input type="text" id="user-input" style="text-align: center; margin-bottom: 10px;">
             <label>SENHA</label>
-            <input type="password" id="pass-input" placeholder="Senha" style="text-align: center;" onkeypress="if(event.key==='Enter') login()">
+            <input type="password" id="pass-input" style="text-align: center;" onkeypress="if(event.key==='Enter') login()">
             <button onclick="login()" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; height: 50px;">ENTRAR</button>
-            <p id="login-error" style="color: var(--danger); font-size: 0.75rem; margin-top: 10px; font-weight: 700; display: none;">Credenciais Inválidas!</p>
+            <p id="login-error" style="color: var(--danger); font-size: 0.75rem; margin-top: 10px; font-weight: 700; display: none;">Dados incorretos.</p>
         </div>
     </div>
 
@@ -181,9 +163,9 @@
             <nav style="flex: 1;">
                 <div class="sidebar-item" onclick="navigate('dashboard')"><i class="fa-solid fa-chart-pie"></i> Dashboard</div>
                 <div class="sidebar-item" onclick="navigate('items')"><i class="fa-solid fa-list-check"></i> Inventário</div>
-                <div class="sidebar-item" onclick="exportarExcel()" style="color: #15803d;"><i class="fa-solid fa-file-excel"></i> Exportar Excel</div>
+                <div class="sidebar-item" onclick="exportarExcel()" style="color: #15803d;"><i class="fa-solid fa-file-excel"></i> Planilha Excel</div>
                 <hr style="margin: 15px 0; border: none; border-top: 1px solid #e2e8f0;">
-                <div class="sidebar-item" onclick="abrirModalBackup()"><i class="fa-solid fa-download"></i> Backup / Dados</div>
+                <div class="sidebar-item" onclick="abrirModalBackup()"><i class="fa-solid fa-code"></i> Backup / Restaurar</div>
                 <div class="sidebar-item" style="color:var(--primary); font-weight: 700;" onclick="imprimirGeral()"><i class="fa-solid fa-print"></i> Relatório Geral</div>
                 <div class="sidebar-item" style="margin-top: auto; color: var(--danger);" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Sair</div>
             </nav>
@@ -191,10 +173,10 @@
 
         <main class="main-content">
             <div id="page-dashboard">
-                <h2 style="margin-bottom: 1.5rem;">Dashboard Administrativo</h2>
+                <h2 style="margin-bottom: 1.5rem;">Resumo de Patrimônio</h2>
                 <div class="stats-grid">
-                    <div class="stat-card"><span class="stat-label">Valor Total Estimado</span><span class="stat-value" id="val-total-financeiro">R$ 0,00</span></div>
-                    <div class="stat-card"><span class="stat-label">Itens (Unidades)</span><span class="stat-value" id="count-total">0</span></div>
+                    <div class="stat-card"><span class="stat-label">Investimento Estimado</span><span class="stat-value" id="val-total-financeiro">R$ 0,00</span></div>
+                    <div class="stat-card"><span class="stat-label">Total de Itens</span><span class="stat-value" id="count-total">0</span></div>
                     <div class="stat-card" style="border-color:var(--success)"><span class="stat-label">Disponíveis</span><span class="stat-value" id="count-cadastrado">0</span></div>
                 </div>
                 <div class="stats-grid">
@@ -206,18 +188,18 @@
 
             <div id="page-items" style="display:none;">
                 <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
-                    <h2>Inventário</h2>
-                    <button class="btn btn-primary" onclick="abrirModalItem()"><i class="fa-solid fa-plus"></i> NOVO ITEM</button>
+                    <h2>Pesquisa de Itens</h2>
+                    <button class="btn btn-primary" onclick="abrirModalItem()"><i class="fa-solid fa-plus"></i> CADASTRAR ITEM</button>
                 </div>
 
                 <div class="filters-area">
                     <div style="flex: 2; position: relative; min-width: 200px;">
                         <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 15px; color: #94a3b8;"></i>
-                        <input type="text" id="search-input" placeholder="Pesquisar item..." onkeyup="renderizar()" style="padding-left: 40px;">
+                        <input type="text" id="search-input" placeholder="Buscar por nome..." onkeyup="renderizar()" style="padding-left: 40px;">
                     </div>
                     <div style="flex: 1; min-width: 150px;">
                         <select id="filter-category" onchange="renderizar()">
-                            <option value="">Todas as Categorias</option>
+                            <option value="">Todas Categorias</option>
                             <option value="Som">Som</option>
                             <option value="Instrumentos">Instrumentos</option>
                             <option value="Mobiliário">Mobiliário</option>
@@ -227,16 +209,25 @@
                             <option value="Outros">Outros</option>
                         </select>
                     </div>
+                    <div style="flex: 1; min-width: 150px;">
+                        <select id="filter-status" onchange="renderizar()">
+                            <option value="">Todos os Status</option>
+                            <option value="disponivel">Disponível</option>
+                            <option value="emprestado">Emprestado</option>
+                            <option value="manutencao">Manutenção</option>
+                            <option value="defeito">Com Defeito</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Descrição / Categoria</th>
+                                <th>Item / Categoria</th>
                                 <th>Status</th>
                                 <th>Qtd</th>
-                                <th>Valor Unit.</th>
+                                <th>Valor</th>
                                 <th style="text-align: center;">Ações</th>
                             </tr>
                         </thead>
@@ -245,15 +236,17 @@
                 </div>
                 
                 <div id="consolidado-principal" class="consolidated-footer">
-                    <div class="resumo-title"><i class="fa-solid fa-calculator"></i> RESUMO CONSOLIDADO</div>
+                    <div class="resumo-title"><i class="fa-solid fa-calculator"></i> RESUMO DA LISTA FILTRADA</div>
                     <div class="resumo-grid">
                         <div class="resumo-col">
-                            <div class="resumo-line"><span>Valor Total:</span><b id="res-val-total">R$ 0,00</b></div>
-                            <div class="resumo-line"><span>Quantidade Total:</span><b id="res-qty-total">0</b></div>
-                            <div class="resumo-line"><span>Itens Disponíveis:</span><b id="res-qty-disp">0</b></div>
+                            <div class="resumo-line"><span>Total Financeiro:</span><b id="res-val-total">R$ 0,00</b></div>
+                            <div class="resumo-line"><span>Qtd Total de Itens:</span><b id="res-qty-total">0</b></div>
                         </div>
                         <div class="resumo-col">
+                            <div class="resumo-line"><span>Disponíveis:</span><b id="res-qty-disp">0</b></div>
                             <div class="resumo-line"><span>Em Empréstimo:</span><b id="res-qty-loan">0</b></div>
+                        </div>
+                        <div class="resumo-col">
                             <div class="resumo-line"><span>Em Manutenção:</span><b id="res-qty-maint">0</b></div>
                             <div class="resumo-line"><span>Com Defeito:</span><b id="res-qty-def">0</b></div>
                         </div>
@@ -266,91 +259,58 @@
     <div id="modal-item" class="modal">
         <div class="modal-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 10px; flex-wrap: wrap; gap: 10px;">
-                <h3 style="color: var(--primary);">DETALHES DO PATRIMÔNIO</h3>
-                <button type="button" class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> FICHA</button>
+                <h3 style="color: var(--primary);">FICHA DE PATRIMÔNIO</h3>
+                <button type="button" class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> IMPRIMIR FICHA</button>
             </div>
             <form id="item-form">
                 <input type="hidden" id="edit-id">
                 <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px;">
-                    <div><label>Equipamento / Modelo</label><input type="text" id="f-desc" required></div>
-                    <div>
-                        <label>Categoria</label>
-                        <select id="f-cat">
-                            <option value="Outros">Outros</option>
-                            <option value="Som">Som</option>
-                            <option value="Instrumentos">Instrumentos</option>
-                            <option value="Mobiliário">Mobiliário</option>
-                            <option value="Cozinha">Cozinha</option>
-                            <option value="Informática">Informática</option>
-                            <option value="Limpeza">Limpeza</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Situação Atual</label>
-                        <select id="f-status" onchange="alternarUIs()">
-                            <option value="disponivel">Disponível</option>
-                            <option value="emprestado">Emprestado</option>
-                            <option value="manutencao">Manutenção</option>
-                            <option value="defeito">Com Defeito</option>
-                        </select>
-                    </div>
+                    <div><label>Descrição</label><input type="text" id="f-desc" required></div>
+                    <div><label>Categoria</label><select id="f-cat"><option value="Outros">Outros</option><option value="Som">Som</option><option value="Instrumentos">Instrumentos</option><option value="Mobiliário">Mobiliário</option><option value="Cozinha">Cozinha</option><option value="Informática">Informática</option><option value="Limpeza">Limpeza</option></select></div>
+                    <div><label>Status</label><select id="f-status" onchange="alternarUIs()"><option value="disponivel">Disponível</option><option value="emprestado">Emprestado</option><option value="manutencao">Manutenção</option><option value="defeito">Com Defeito</option></select></div>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
                     <div><label>Quantidade</label><input type="number" id="f-qty" value="1"></div>
-                    <div><label>Valor Unitário (R$)</label><input type="number" id="f-val" step="0.01"></div>
+                    <div><label>Vlr Unitário</label><input type="number" id="f-val" step="0.01"></div>
                     <div><label>NF / Série</label><input type="text" id="f-origin"></div>
                 </div>
-                <label>Observação Geral</label><textarea id="f-obs" rows="2"></textarea>
 
-                <div id="ui-defect" class="section-ui hidden">
-                    <p style="font-weight:900; color:var(--danger); margin-bottom:5px;">DETALHES DO DEFEITO</p>
-                    <textarea id="f-defect-obs" rows="2"></textarea>
-                </div>
-
-                <div id="ui-loan" class="section-ui hidden">
-                    <p style="font-weight:900; color:var(--warning); margin-bottom:5px;">DADOS DO EMPRÉSTIMO</p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-                        <div><label>Data Saída</label><input type="date" id="f-loan-date"></div>
-                        <div><label>Resp. IBC</label><input type="text" id="f-loan-from"></div>
-                        <div><label>Recebedor</label><input type="text" id="f-loan-to"></div>
-                    </div>
-                    <label>Obs. Empréstimo</label><input type="text" id="f-loan-obs">
-                </div>
-
-                <div id="ui-maint" class="section-ui hidden">
-                    <p style="font-weight:900; color:var(--danger); margin-bottom:5px;">DADOS DA MANUTENÇÃO</p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-                        <div><label>Técnica/Empresa</label><input type="text" id="f-m-comp"></div>
-                        <div><label>Nº OS</label><input type="text" id="f-m-os"></div>
-                        <div><label>Previsão</label><input type="date" id="f-m-next"></div>
-                    </div>
-                    <label>Serviço / Peças</label><textarea id="f-m-obs" rows="2"></textarea>
-                </div>
+                <div id="ui-defect" class="section-ui hidden"><label>Descreva o Defeito</label><textarea id="f-defect-obs" rows="2"></textarea></div>
+                <div id="ui-loan" class="section-ui hidden"><p style="font-weight:900; color:var(--warning);">EMPRÉSTIMO</p><div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;"><div><label>Data</label><input type="date" id="f-loan-date"></div><div><label>Resp.</label><input type="text" id="f-loan-from"></div><div><label>Recebedor</label><input type="text" id="f-loan-to"></div></div></div>
+                <div id="ui-maint" class="section-ui hidden"><p style="font-weight:900; color:var(--danger);">MANUTENÇÃO</p><div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;"><div><label>Empresa</label><input type="text" id="f-m-comp"></div><div><label>OS nº</label><input type="text" id="f-m-os"></div><div><label>Retorno</label><input type="date" id="f-m-next"></div></div></div>
 
                 <div>
                     <label>Histórico</label>
                     <div id="history-content" class="history-box"></div>
-                    <input type="text" id="f-history-new" placeholder="Adicionar nota ao histórico..." style="margin-top:8px; border-style: dashed;">
+                    <input type="text" id="f-history-new" placeholder="Adicionar anotação..." style="margin-top:8px; border-style: dashed;">
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-top: 25px;">
-                    <button type="button" class="btn" style="background:#e2e8f0; flex:1" onclick="fecharModais()">VOLTAR</button>
-                    <button type="submit" class="btn btn-primary" style="flex:2">SALVAR</button>
+                    <button type="button" class="btn" style="background:#e2e8f0; flex:1" onclick="fecharModais()">CANCELAR</button>
+                    <button type="submit" class="btn btn-primary" style="flex:2">SALVAR ALTERAÇÕES</button>
                 </div>
             </form>
         </div>
     </div>
 
     <div id="modal-backup" class="modal">
-        <div class="modal-content" style="width: 450px;">
-            <h3>Segurança dos Dados</h3>
-            <button class="btn btn-primary" style="width: 100%; margin: 10px 0;" onclick="gerarCodigo()">GERAR CÓDIGO BACKUP</button>
-            <div class="admin-only admin-block" style="display:none;">
-                <p style="font-weight: 700; color: var(--danger); font-size: 0.8rem; margin-top: 15px;">RESTAURAÇÃO (ACESSO ADMIN)</p>
-                <textarea id="txt-import" rows="4" placeholder="Cole o código aqui" style="margin-top:5px;"></textarea>
-                <button class="btn" style="width: 100%; margin-top: 10px; background: var(--warning); color: white;" onclick="importarCodigo()">RESTAURAR AGORA</button>
+        <div class="modal-content" style="width: 500px;">
+            <h3 style="color: var(--primary); margin-bottom: 10px;">Backup e Restauração</h3>
+            <p style="font-size: 0.8rem; margin-bottom: 15px; color: #64748b;">Use o botão abaixo para gerar o código e salvá-lo em um local seguro.</p>
+            
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 15px;" onclick="gerarCodigo()">
+                <i class="fa-solid fa-copy"></i> COPIAR CÓDIGO DE BACKUP
+            </button>
+
+            <div class="admin-only admin-block" style="border-top: 1px solid #e2e8f0; padding-top: 15px;">
+                <label>RESTAURAR DADOS (Cole o código abaixo)</label>
+                <textarea id="txt-import" rows="4" style="font-size: 0.7rem; margin-bottom: 10px;" placeholder="Cole o código Base64 aqui..."></textarea>
+                <button class="btn" style="width: 100%; background: var(--warning); color: white;" onclick="importarCodigo()">
+                    <i class="fa-solid fa-file-import"></i> IMPORTAR CÓDIGO
+                </button>
             </div>
-            <button class="btn" style="width: 100%; margin-top: 20px; background: #e2e8f0;" onclick="fecharModais()">FECHAR</button>
+
+            <button class="btn" style="width: 100%; margin-top: 15px; background: #e2e8f0;" onclick="fecharModais()">FECHAR</button>
         </div>
     </div>
 
@@ -373,18 +333,11 @@
             renderizar();
         }
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
-
-        function navigate(p) {
-            showPage(p);
-            if(window.innerWidth <= 768) toggleSidebar();
-        }
-
-        function showPage(p) {
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+        function navigate(p) { 
             document.getElementById('page-dashboard').style.display = p === 'dashboard' ? 'block' : 'none';
             document.getElementById('page-items').style.display = p === 'items' ? 'block' : 'none';
+            if(window.innerWidth <= 768) toggleSidebar(); 
         }
 
         function alternarUIs() {
@@ -404,31 +357,21 @@
             if(id !== null) {
                 const it = db[id];
                 document.getElementById('f-desc').value = it.desc;
-                document.getElementById('f-cat').value = it.cat || 'Outros';
+                document.getElementById('f-cat').value = it.cat;
                 document.getElementById('f-status').value = it.status;
                 document.getElementById('f-qty').value = it.qty;
                 document.getElementById('f-val').value = it.val;
                 document.getElementById('f-origin').value = it.origin;
-                document.getElementById('f-obs').value = it.obs;
                 document.getElementById('f-defect-obs').value = it.defect_obs || '';
                 document.getElementById('f-loan-date').value = it.loan_date || '';
                 document.getElementById('f-loan-from').value = it.loan_from || '';
                 document.getElementById('f-loan-to').value = it.loan_to || '';
-                document.getElementById('f-loan-obs').value = it.loan_obs || '';
                 document.getElementById('f-m-comp').value = it.m_comp || '';
                 document.getElementById('f-m-os').value = it.m_os || '';
                 document.getElementById('f-m-next').value = it.m_next || '';
-                document.getElementById('f-m-obs').value = it.m_obs || '';
-                
-                if(it.history && it.history.length > 0) {
-                    it.history.slice().reverse().forEach(h => {
-                        historyDiv.innerHTML += `<div class="history-item"><b>${h.date} (${h.user}):</b> ${h.msg}</div>`;
-                    });
-                } else {
-                    historyDiv.innerHTML = '<div class="history-item">Sem histórico.</div>';
-                }
-            } else {
-                historyDiv.innerHTML = '<div class="history-item">Novo registro.</div>';
+                (it.history || []).slice().reverse().forEach(h => {
+                    historyDiv.innerHTML += `<div class="history-item"><b>${h.date}:</b> ${h.msg}</div>`;
+                });
             }
             alternarUIs();
             document.getElementById('modal-item').classList.add('active');
@@ -443,28 +386,20 @@
             e.preventDefault();
             const id = document.getElementById('edit-id').value;
             const now = new Date().toLocaleString('pt-BR');
-            const customLog = document.getElementById('f-history-new').value;
+            const logMsg = document.getElementById('f-history-new').value;
+            let hist = id !== '' ? (db[id].history || []) : [];
             
-            let history = id !== '' ? (db[id].history || []) : [];
-            
-            if(id === '') {
-                history.push({ date: now, user: currentUserRole.toUpperCase(), msg: "Cadastro inicial." });
-            } else if(customLog) {
-                history.push({ date: now, user: currentUserRole.toUpperCase(), msg: customLog });
-            } else if(db[id].status !== document.getElementById('f-status').value) {
-                history.push({ date: now, user: currentUserRole.toUpperCase(), msg: `Status: ${document.getElementById('f-status').value.toUpperCase()}` });
-            }
+            if(logMsg) hist.push({date: now, msg: logMsg});
+            else if(id==='') hist.push({date: now, msg: "Item Cadastrado"});
 
             const data = {
                 desc: document.getElementById('f-desc').value, cat: document.getElementById('f-cat').value,
                 status: document.getElementById('f-status').value, qty: parseInt(document.getElementById('f-qty').value) || 0, 
-                val: parseFloat(document.getElementById('f-val').value) || 0, origin: document.getElementById('f-origin').value, 
-                obs: document.getElementById('f-obs').value, defect_obs: document.getElementById('f-defect-obs').value, 
-                loan_date: document.getElementById('f-loan-date').value, loan_from: document.getElementById('f-loan-from').value, 
-                loan_to: document.getElementById('f-loan-to').value, loan_obs: document.getElementById('f-loan-obs').value, 
-                m_comp: document.getElementById('f-m-comp').value, m_os: document.getElementById('f-m-os').value, 
-                m_next: document.getElementById('f-m-next').value, m_obs: document.getElementById('f-m-obs').value,
-                history: history
+                val: parseFloat(document.getElementById('f-val').value) || 0, origin: document.getElementById('f-origin').value,
+                defect_obs: document.getElementById('f-defect-obs').value, loan_date: document.getElementById('f-loan-date').value,
+                loan_from: document.getElementById('f-loan-from').value, loan_to: document.getElementById('f-loan-to').value,
+                m_comp: document.getElementById('f-m-comp').value, m_os: document.getElementById('f-m-os').value,
+                m_next: document.getElementById('f-m-next').value, history: hist
             };
 
             if(id === '') db.push(data); else db[id] = data;
@@ -475,104 +410,103 @@
         function renderizar() {
             const list = document.getElementById('items-list');
             const search = document.getElementById('search-input').value.toLowerCase();
-            const catFilter = document.getElementById('filter-category').value;
+            const cat = document.getElementById('filter-category').value;
+            const statusFilter = document.getElementById('filter-status').value;
             list.innerHTML = '';
             
-            let tQ = 0, qD = 0, qE = 0, qM = 0, qDef = 0, totalF = 0;
+            let tQ=0, qD=0, qE=0, qM=0, qDef=0, tF=0;
 
             db.forEach((it, i) => {
-                const matchSearch = it.desc.toLowerCase().includes(search) || (it.obs && it.obs.toLowerCase().includes(search));
-                const matchCat = catFilter === '' || it.cat === catFilter;
+                const matchSearch = it.desc.toLowerCase().includes(search);
+                const matchCat = cat === '' || it.cat === cat;
+                const matchStatus = statusFilter === '' || it.status === statusFilter;
 
-                if(matchSearch && matchCat) {
-                    const q = it.qty || 0; const v = it.val || 0;
-                    tQ += q; totalF += (q * v);
-                    if(it.status === 'disponivel') qD += q;
-                    else if(it.status === 'emprestado') qE += q;
-                    else if(it.status === 'manutencao') qM += q;
-                    else if(it.status === 'defeito') qDef += q;
+                if(matchSearch && matchCat && matchStatus) {
+                    const q = it.qty || 0;
+                    const v = it.val || 0;
+                    tQ += q; tF += (q * v);
+                    
+                    if(it.status==='disponivel') qD+=q;
+                    else if(it.status==='emprestado') qE+=q;
+                    else if(it.status==='manutencao') qM+=q;
+                    else if(it.status==='defeito') qDef+=q;
 
-                    const btnExcluir = currentUserRole === 'admin' ? `<button class="btn-table" style="color:var(--danger)" onclick="excluir(${i})"><i class="fa-solid fa-trash"></i></button>` : '';
-
+                    const delBtn = currentUserRole === 'admin' ? `<button class="btn-table" style="color:var(--danger)" onclick="excluir(${i})"><i class="fa-solid fa-trash"></i></button>` : '';
                     list.innerHTML += `<tr>
-                        <td data-label="Item">
-                            <b>${it.desc}</b><br>
-                            <small style="color:#64748b; font-size:0.65rem; text-transform:uppercase;">${it.cat || 'Outros'}</small>
-                        </td>
+                        <td data-label="Item"><b>${it.desc}</b><br><small>${it.cat}</small></td>
                         <td data-label="Status"><span style="font-weight:700; color:${it.status==='disponivel'?'#10b981':it.status==='manutencao'?'#ef4444':'#f59e0b'}">${it.status.toUpperCase()}</span></td>
                         <td data-label="Qtd">${q}</td>
                         <td data-label="Valor">R$ ${v.toFixed(2)}</td>
-                        <td style="text-align:center; display:flex; gap:8px; justify-content:center;">
+                        <td style="display:flex; gap:5px; justify-content:center;">
                             <button class="btn-table" style="color:var(--info)" onclick="abrirModalItem(${i})"><i class="fa-solid fa-pen"></i></button>
-                            ${btnExcluir}
+                            ${delBtn}
                         </td>
                     </tr>`;
                 }
             });
 
-            const setVal = (id, val) => document.getElementById(id).innerText = val;
-            const financeiro = "R$ " + totalF.toLocaleString('pt-BR', {minimumFractionDigits: 2});
-            
-            setVal('val-total-financeiro', financeiro);
-            setVal('count-total', tQ);
-            setVal('count-cadastrado', qD);
-            setVal('count-loan', qE);
-            setVal('count-conserto', qM);
-            setVal('count-defeito', qDef);
+            const fmt = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+            document.getElementById('val-total-financeiro').innerText = fmt(tF);
+            document.getElementById('count-total').innerText = tQ;
+            document.getElementById('count-cadastrado').innerText = qD;
+            document.getElementById('count-loan').innerText = qE;
+            document.getElementById('count-conserto').innerText = qM;
+            document.getElementById('count-defeito').innerText = qDef;
 
-            setVal('res-val-total', financeiro);
-            setVal('res-qty-total', tQ);
-            setVal('res-qty-disp', qD);
-            setVal('res-qty-loan', qE);
-            setVal('res-qty-maint', qM);
-            setVal('res-qty-def', qDef);
+            document.getElementById('res-val-total').innerText = fmt(tF);
+            document.getElementById('res-qty-total').innerText = tQ;
+            document.getElementById('res-qty-disp').innerText = qD;
+            document.getElementById('res-qty-loan').innerText = qE;
+            document.getElementById('res-qty-maint').innerText = qM;
+            document.getElementById('res-qty-def').innerText = qDef;
+        }
+
+        function excluir(i) { if(confirm("Remover permanentemente?")) { db.splice(i,1); localStorage.setItem(DB_KEY, JSON.stringify(db)); renderizar(); } }
+
+        /* FUNÇÕES DE BACKUP POR CÓDIGO (BASE64) */
+        function gerarCodigo() {
+            try {
+                const code = btoa(unescape(encodeURIComponent(JSON.stringify(db))));
+                const tempInput = document.createElement("input");
+                document.body.appendChild(tempInput);
+                tempInput.value = code;
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+                alert("Código de Backup copiado com sucesso!");
+            } catch(e) { alert("Erro ao gerar código."); }
+        }
+
+        function importarCodigo() {
+            if(currentUserRole !== 'admin') return;
+            const code = document.getElementById('txt-import').value.trim();
+            if(!code) return alert("Cole o código primeiro.");
+            
+            try {
+                const data = JSON.parse(decodeURIComponent(escape(atob(code))));
+                if(Array.isArray(data) && confirm("Isso substituirá todos os dados atuais. Confirmar?")) {
+                    db = data;
+                    localStorage.setItem(DB_KEY, JSON.stringify(db));
+                    renderizar();
+                    fecharModais();
+                    alert("Dados restaurados com sucesso!");
+                }
+            } catch(e) { alert("Código de backup inválido ou corrompido."); }
         }
 
         function exportarExcel() {
-            if(db.length === 0) return alert("Nada para exportar!");
-            const formatado = db.map(it => ({
-                "Equipamento": it.desc, "Categoria": it.cat || 'Outros', "Status": it.status.toUpperCase(), "Qtd": it.qty,
-                "Valor Unit.": it.val, "Total": it.qty * it.val, "NF/Série": it.origin, "Observação": it.obs
-            }));
-            const ws = XLSX.utils.json_to_sheet(formatado);
+            const ws = XLSX.utils.json_to_sheet(db);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "IBC_2026");
-            XLSX.writeFile(wb, "Patrimonio_IBC.xlsx");
+            XLSX.utils.book_append_sheet(wb, ws, "Patrimônio");
+            XLSX.writeFile(wb, "IBC_Inventario.xlsx");
         }
 
-        function imprimirGeral() {
-            document.getElementById('p-title').innerText = "Inventário Master - IBC";
+        function imprimirGeral() { 
             document.getElementById('p-date-top').innerText = new Date().toLocaleString('pt-BR');
-            setTimeout(() => { window.print(); }, 200);
-        }
-
-        function excluir(i) { 
-            if(currentUserRole === 'admin' && confirm('Excluir este item permanentemente?')) { 
-                db.splice(i,1); localStorage.setItem(DB_KEY, JSON.stringify(db)); renderizar(); 
-            } 
-        }
-
-        function gerarCodigo() { 
-            const code = btoa(unescape(encodeURIComponent(JSON.stringify(db)))); 
-            const tempInput = document.createElement("input");
-            document.body.appendChild(tempInput);
-            tempInput.value = code; tempInput.select();
-            document.execCommand("copy"); document.body.removeChild(tempInput);
-            alert("Backup copiado para a área de transferência!"); 
+            window.print(); 
         }
 
         function abrirModalBackup() { fecharModais(); document.getElementById('modal-backup').classList.add('active'); }
-
-        function importarCodigo() { 
-            if(currentUserRole !== 'admin') return; 
-            try { 
-                const data = JSON.parse(decodeURIComponent(escape(atob(document.getElementById('txt-import').value)))); 
-                if(confirm("Isso substituirá todos os dados atuais. Confirmar?")) {
-                    db = data; localStorage.setItem(DB_KEY, JSON.stringify(db)); 
-                    renderizar(); fecharModais(); alert("Dados restaurados!");
-                }
-            } catch(e) { alert("Código inválido."); }
-        }
     </script>
 </body>
 </html>
